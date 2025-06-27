@@ -1,0 +1,259 @@
+/* --------------------------------------------------
+   1.  RESET & CANVAS SETUP
+-------------------------------------------------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  /* Soft background that contrasts the yellow */
+  background: #fdf6e3;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-family: system-ui, sans-serif;
+}
+
+/* Custom properties for easy color tweaks */
+:root {
+  --pikachu-yellow: #fcd51b;
+  --pikachu-border: #ffbe00;
+  --cheek-red: #ff4b4b;
+  --eye-black: #1c1c1c;
+}
+
+/* --------------------------------------------------
+   2.  PIKACHU WRAPPER
+-------------------------------------------------- */
+.pikachu {
+  position: relative;           /* anchor for absolutely-positioned parts */
+  width: 260px;                 /* overall size */
+  height: 300px;
+}
+
+/* --------------------------------------------------
+   3.  EARS
+-------------------------------------------------- */
+.ear {
+  position: absolute;
+  width: 60px;
+  height: 150px;
+  background: var(--pikachu-yellow);
+  border-radius: 45% 45% 0 0;   /* rounded top, flat bottom */
+  transform-origin: bottom center;
+  overflow: hidden;             /* clip black tip */
+  z-index: 1;                   /* sit above head */
+}
+
+/* Black ear tip created with a pseudo-element so we stay image-free */
+.ear::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  height: 55%;
+  background: var(--eye-black);
+}
+
+/* Left ear: slight left tilt */
+.ear--left {
+  left: 40px;
+  top: -55px;
+  transform: rotate(-15deg);
+}
+/* Right ear: slight right tilt */
+.ear--right {
+  right: 40px;
+  top: -55px;
+  transform: rotate(18deg);
+}
+
+/* --------------------------------------------------
+   4.  HEAD
+-------------------------------------------------- */
+.head {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 220px;
+  height: 220px;
+  background: var(--pikachu-yellow);
+  border-radius: 50%;
+  border: 4px solid var(--pikachu-border); /* subtle outline */
+  transform: translateX(-50%);
+}
+
+/* --- Eyes ------------------------------------------------ */
+.eye {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  background: var(--eye-black);
+  border-radius: 50%;
+  top: 75px;
+}
+
+/* Position eyes symmetrically by using transforms from center */
+.eye--left  { left: 55px; }
+.eye--right { right: 55px; }
+
+/* Little white highlight */
+.eye__shine {
+  position: absolute;
+  top: 6px;
+  left: 6px;
+  width: 12px;
+  height: 12px;
+  background: #fff;
+  border-radius: 50%;
+}
+
+/* --- Nose (tiny black dot) -------------------------------- */
+.nose {
+  position: absolute;
+  top: 115px;
+  left: 50%;
+  width: 12px;
+  height: 12px;
+  background: var(--eye-black);
+  border-radius: 50%;
+  transform: translateX(-50%);
+}
+
+/* --- Mouth (two small curved lines) ----------------------- */
+.mouth {
+  position: absolute;
+  top: 140px;
+  left: 50%;
+  width: 90px;
+  height: 45px;     /* container for two arcs */
+  transform: translateX(-50%);
+}
+
+.mouth__left,
+.mouth__right {
+  position: absolute;
+  width: 45px;
+  height: 45px;
+  border: 3px solid var(--eye-black);
+  border-top: none;              /* only lower + side borders */
+  border-left: none;
+  border-radius: 0 0 45px 45px;  /* quarter circle */
+}
+
+.mouth__left  { transform: rotate(8deg); left: 0;  }
+.mouth__right { transform: scaleX(-1) rotate(8deg); right: 0; }
+
+/* --- Cheeks ----------------------------------------------- */
+.cheek {
+  position: absolute;
+  width: 55px;
+  height: 55px;
+  background: var(--cheek-red);
+  border-radius: 50%;
+  top: 120px;
+}
+
+.cheek--left  { left: 15px; }
+.cheek--right { right: 15px; }
+
+/* --------------------------------------------------
+   5.  BODY & LIMBS
+-------------------------------------------------- */
+.body {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  width: 180px;
+  height: 150px;
+  background: var(--pikachu-yellow);
+  border: 4px solid var(--pikachu-border);
+  border-top: none;               /* neck looks continuous with head */
+  border-bottom-left-radius: 90px 70px;
+  border-bottom-right-radius: 90px 70px;
+  transform: translateX(-50%);
+  z-index: 0;
+}
+
+/* Subtle belly shadow using inset box-shadow */
+.belly {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: inset 0 -25px 30px rgba(0, 0, 0, 0.08);
+}
+
+/* --- Arms ------------------------------------------------- */
+.arm {
+  position: absolute;
+  top: -10px;
+  width: 40px;
+  height: 80px;
+  background: var(--pikachu-yellow);
+  border: 4px solid var(--pikachu-border);
+  border-radius: 40px 40px 30px 30px;
+}
+
+.arm--left  { left: -15px; transform: rotate(10deg); }
+.arm--right { right: -15px; transform: rotate(-10deg); }
+
+/* --- Legs ------------------------------------------------- */
+.leg {
+  position: absolute;
+  bottom: -10px;
+  width: 55px;
+  height: 60px;
+  background: var(--pikachu-yellow);
+  border: 4px solid var(--pikachu-border);
+  border-radius: 50px 50px 60px 60px;
+}
+
+/* A small brownish footpad using a ::after pseudo-element */
+.leg::after {
+  content: "";
+  position: absolute;
+  bottom: -8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80%;
+  height: 20px;
+  background: #d49344;
+  border-radius: 0 0 30px 30px;
+}
+
+.leg--left  { left: 25px; }
+.leg--right { right: 25px; }
+
+/* --------------------------------------------------
+   6.  SIMPLE ZIG-ZAG TAIL
+-------------------------------------------------- */
+/* Base rectangle (emerges behind body) */
+.tail {
+  position: absolute;
+  background: var(--pikachu-yellow);
+  border: 4px solid var(--pikachu-border);
+  z-index: -1; /* pushes tail behind the body */
+}
+
+.tail--base {
+  width: 35px;
+  height: 90px;
+  bottom: 40px;
+  right: -20px;
+  transform: rotate(10deg);
+}
+
+/* Tip rectangle (gives the iconic zig-zag)  */
+.tail--tip {
+  width: 90px;
+  height: 35px;
+  bottom: 115px;
+  right: -55px;
+  transform: rotate(10deg);
+  border-bottom: 0;
+}
